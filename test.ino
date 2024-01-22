@@ -159,11 +159,13 @@ void setup()
 }
 
 void loop()
-{int state = (digitalRead(switchPin));
+{
+ int state = (digitalRead(switchPin));
   Serial.print(state);
   Serial.print("        ");
 
   if(state == 0){
+    hand_control(5);
     voice_control();
     Serial.println("voice controll activated");
     
@@ -172,8 +174,9 @@ void loop()
     delay(1000);
 }
 else{
-  hand_control();
+  hand_control(8);
   Serial.println("hand controll activated");
+  
 }
 }
 void voice_control(){
@@ -192,7 +195,7 @@ void voice_control(){
         analogWrite(lpwm,100);
         break;
       case back:
-        /* turn off LED/
+        /* turn off LED*/
         //digitalWrite(led, LOW);
         digitalWrite(in1,LOW);
         digitalWrite(in2,HIGH);
@@ -236,7 +239,16 @@ void voice_control(){
   }
   
 }
-void hand_control(){
+void hand_control(int a){
+   if(a==5){
+        digitalWrite(in1,LOW);
+        digitalWrite(in2,LOW);
+        analogWrite(rpwm,0);
+        digitalWrite(in3,LOW);
+        digitalWrite(in4,LOW);
+        analogWrite(lpwm,0);
+        return;
+   }
   if (Serial.available() > 0) {
     String receivedData = Serial.readStringUntil('\n');
     
@@ -258,7 +270,7 @@ void hand_control(){
         analogWrite(lpwm,100);
         break;
       case 2:
-        /* turn off LED/
+        /* turn off LED*/
         //digitalWrite(led, LOW);
         digitalWrite(in1,LOW);
         digitalWrite(in2,HIGH);
@@ -297,5 +309,6 @@ void hand_control(){
         Serial.println(" function undefined");
         break;
     }
+  
   }
   }
